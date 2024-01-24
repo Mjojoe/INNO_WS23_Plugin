@@ -1,5 +1,4 @@
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  console.log("Message:" + request.message)
   if (request.message === "getTableData") {
       const tableDataToSend = localStorage.getItem("selectedTableData");
       sendResponse(tableDataToSend);
