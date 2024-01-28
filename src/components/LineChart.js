@@ -1,8 +1,12 @@
-import React from "react";
-import { Line } from "react-chartjs-2";
-import { Chart as ChartJS } from "chart.js/auto";
+import React, { useRef,useEffect } from "react";
+import { Line, getElementsAtEvent } from "react-chartjs-2";
+import { Chart , registerables} from "chart.js";
+
+Chart.register(...registerables)
+
 
 function LineChart({chartData}){
+
     return <Line data={chartData}/>
 }
 

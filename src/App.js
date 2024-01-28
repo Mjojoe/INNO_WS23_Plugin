@@ -1,17 +1,12 @@
 import "./App.css";
-import React, { Component, useEffect, useRef, useState } from "react";
 import LineChart from "./components/LineChart";
+import React, { Component, useEffect, useRef, useState } from "react";
 
-
-
-const tableBackgroundColor = "aqua"
-const tableBordercolor = "black"
 const StorageDataKey = "TableData"
 const initialData = {
   labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"], 
   datasets: [{
-    label: "Blutwerte", data: [3, 4, 9, 12, 8, 4, 10],
-    backgroundColor: 'aqua', borderColor: 'black',
+    label: "Blutwerte", data: [3, 4, 9, 12, 8, 4, 10]
   }]
 }
 
@@ -20,13 +15,14 @@ function App() {
   const [dataSets, setDataSets] = useState(() => { });
   const [data, setData] = useState(() => { return initialData })
   const isMounted = useRef(false)
+  const haveData = useRef(false)
 
   function getTable() {
+    haveData.current=true
     const tableData = {
       datasets: dataSets,
-      lables: lables
+      labels: lables
     }
-    console.log(tableData)
     setData(tableData)
   }
 
@@ -41,7 +37,7 @@ function App() {
           dataLables.push(cell);
           continue;
         }
-        dataRow.push(cell);
+        dataRow.push(parseInt(cell));
       }
       data.push(dataRow);
     }
@@ -49,10 +45,8 @@ function App() {
     const tableDataSets = [];
     for (const [index, dataset] of data.entries()) {
       tableDataSets.push({
-        lable: dataLables[index],
         data: dataset,
-        backgroundColor: tableBackgroundColor,
-        borderColor: tableBordercolor,
+        label: dataLables[index]
       })
     }
     setDataSets(tableDataSets)
@@ -92,15 +86,19 @@ function App() {
   },[dataSets])
 
 
-  return (
-    <div className="Chart">
-      <h1>Blutwerte</h1>
-      <div style={{ width: 800 }}>
-        <LineChart chartData={data} />
+  if(haveData.current){
+    console.log(data)
+    return (
+      <div className="Chart">
+        <h1>Blutwerte</h1>
+        <div style={{ width: 800 }}>
+          <LineChart chartData={data}/>
+        </div>
       </div>
-    </div>
-  );
-}
+    );
+  }
+    return <div>Loading...</div>
 
+}
 export default App;
 
